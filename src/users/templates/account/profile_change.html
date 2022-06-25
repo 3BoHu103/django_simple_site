@@ -1,0 +1,10 @@
+{% extends 'account/profile.html' %}
+{% load django_bootstrap5 %}
+{% block title %}Change {{ user.username }}'s profile{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {% bootstrap_form form layout='floating' %}
+    {% bootstrap_button 'Save' type='submit' %}
+</form>
+{% endblock %}
