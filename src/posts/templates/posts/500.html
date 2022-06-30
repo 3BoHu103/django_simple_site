@@ -1,0 +1,15 @@
+{% extends 'posts/index.html' %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head_title %}Error 500{% endblock %}
+{% block extra_head %}
+<header class="py-5 bg-light border-bottom mb-4">
+    <div class="container">
+        <div class="text-center my-5">
+            <h1 class="fw-bolder">Oh, sorry! Error 500</h1>
+            <p class="lead mb-0">Internal Server Error</p>
+        </div>
+    </div>
+</header>
+{% endblock %}

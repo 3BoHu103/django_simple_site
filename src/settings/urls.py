@@ -21,4 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('users.urls')),
+    path('', include('posts.urls')),
 ]
+
+handler404 = 'posts.views.page_not_found_view'
+handler500 = 'posts.views.server_error'
