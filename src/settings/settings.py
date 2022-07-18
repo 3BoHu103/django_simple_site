@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 import environ
 from pathlib import Path
 
@@ -27,8 +27,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = env('DEBUG')
-DEBUG = False
+DEBUG = env('DEBUG')
+# DEBUG = False
 
 ALLOWED_HOSTS = env('ALLOWED_HOSTS').split()
 
@@ -50,6 +50,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
     'django_bootstrap5',
     'posts.apps.PostsConfig',
+    'easy_thumbnails',
+    'tinymce',
+
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
@@ -128,7 +132,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -156,6 +164,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 AUTH_USER_MODEL = 'users.UserProfile'
 
 # smtp settings
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
@@ -163,3 +172,29 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_FROM = env('EMAIL_FROM')
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
+
+# easy_thumbnails settings
+# https://pypi.org/project/easy-thumbnails/
+
+THUMBNAIL_ALIASES = {
+    'posts.Post.image': {
+        'min_image': {'size': (700, 350), 'crop': 'smart'},
+        'big_image': {'size': (850, 350), 'crop': 'scale'},
+        'detail_image': {'size': (900, 400), 'crop': 'scale'},
+    }
+}
+
+THUMBNAIL_BASEDIR = 'thumbnails'
+
+TINYMCE_DEFAULT_CONFIG = {
+    "theme": "silver",
+    "height": 500,
+    "menubar": False,
+    "plugins": "advlist,autolink,lists,link,image,charmap,print,preview,anchor,"
+    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,paste,"
+    "code,wordcount,codesample",
+    "toolbar": "undo redo | formatselect | codesample | image anchor link preview|"
+    "bold italic backcolor | alignleft aligncenter "
+    "alignright alignjustify | bullist numlist outdent indent | "
+    "removeformat",
+}
